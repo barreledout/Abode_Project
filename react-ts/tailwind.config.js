@@ -4,6 +4,10 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
   	extend: {
+		screens: {
+			'mq400w': '400px',
+			'mq500w': '500px'
+		},
   		animation: {
   			heroText: {}
   		},
