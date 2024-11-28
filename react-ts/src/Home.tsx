@@ -4,10 +4,10 @@ import ServiceCards from "./ServiceCards";
 
 const Home = () => {
   return (
-    <div>
+    <section>
       <HeroImg />
       <ServiceCards />
-    </div>
+    </section>
   );
 };
 
