@@ -11,7 +11,7 @@ import {
 
 const Navbar = () => {
   return (
-    <header className="min-w-[200px] min-h-[20px]">
+    <header className="min-w-[200px] min-h-[20px] shadow-md">
       <div className="flex justify-between items-center p-3 gap-9 mx-2 mq400w:mx-3 ">
         <div className="">
           <Link to="/" className="flex items-center gap-2">
