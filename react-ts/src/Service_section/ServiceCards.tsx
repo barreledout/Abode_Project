@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { HomeEstimateLogo, MarketAnalysisLogo, InvestmentLogo } from "./logos";
 
 const ServiceCards = () => {
   const services = [
@@ -8,7 +9,7 @@ const ServiceCards = () => {
       serviceName: "Home_estimate",
       serviceIntro: "View the Price of Your Home",
       desc: "Get an estimate on your home based on comparable properties similiar to yours.",
-      imgHref: "/service_svgs/HomeEstimate.svg",
+      serviceLogo: <HomeEstimateLogo />,
       linkHref: "/home_value_estimator",
       buttonText: "Get Home Estimate",
     },
@@ -17,7 +18,7 @@ const ServiceCards = () => {
       serviceName: "Market_analysis",
       serviceIntro: "Get Insight on Market Trends",
       desc: "See current and historical home values and data in your location.",
-      imgHref: "/service_svgs/InvestmentAnalysis.svg",
+      serviceLogo: <InvestmentLogo />,
       linkHref: "/market_analysis",
       buttonText: "Get Market Analysis",
     },
@@ -26,7 +27,7 @@ const ServiceCards = () => {
       serviceName: "Investment_analyis",
       serviceIntro: "RE Investment Analysis",
       desc: "Input data of properties to see the possible investment metrics.",
-      imgHref: "/service_svgs/MarketAnalysis.svg",
+      serviceLogo: <MarketAnalysisLogo />,
       linkHref: "/real_estate_investment_tool",
       buttonText: "Get Investment Analysis",
     },
@@ -42,16 +43,8 @@ const ServiceCards = () => {
         >
           {/* Service logo */}
           <div className="relative min-w-[90px] max-w-[100px] min-h-[90px] p-2 sm:max-w-[110px] md:min-w-[190px] md:ml-3 lg:min-h-[150px]">
-            <img
-              src={item.imgHref}
-              alt="Service logos"
-              className="relative top-3 w-full h-full z-20"
-            />
-            <img
-              src="/service_svgs/ssshape.svg"
-              alt="Service logos backdrop blob image"
-              className="absolute z-10 top-[-12px]"
-            />
+            {item.serviceLogo}
+            <span className="sr-only">Service logos</span>
           </div>
           <div className="grid gap-2 text-xs py-2 basis-[170px] flex-grow ">
             <div className="grid gap-1 md:gap-0">
