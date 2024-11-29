@@ -57,7 +57,7 @@ const Navbar = () => {
 
           {/* Regular navbar for min width 640px. */}
           <div className="hidden sm:block">
-            <nav className="flex justify-between items-center font-nunito text-sm gap-4 lg:text-base xl:text-lg truncate">
+            <nav className="flex justify-between items-center font-nunito text-sm gap-4 md:text-base lg:text-lg truncate">
               <Link to="/home_value_estimator">
                 <span className="">Home Value Estimator</span>
               </Link>
