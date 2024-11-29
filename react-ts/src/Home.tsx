@@ -6,7 +6,9 @@ const Home = () => {
   return (
     <section>
       <HeroImg />
-      <ServiceCards />
+      <div className="bg-gray-300/20">
+        <ServiceCards />
+      </div>
     </section>
   );
 };
