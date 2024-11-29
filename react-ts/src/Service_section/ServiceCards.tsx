@@ -2,8 +2,21 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { HomeEstimateLogo, MarketAnalysisLogo, InvestmentLogo } from "./logos";
 
+interface Service {
+  serviceName: string;
+  serviceIntro: string;
+  desc: string;
+  serviceLogo: JSX.Element; // Ensures type safety for React elements
+  linkHref: string;
+  buttonText: string;
+}
+
+interface ServicesProps {
+  services: Service[]; // Array of `Service` objects
+}
+
 const ServiceCards = () => {
-  const services = [
+  const services:Service[] = [
     {
       //Home estimate service
       serviceName: "Home_estimate",
@@ -37,7 +50,7 @@ const ServiceCards = () => {
     <section className="flex flex-col gap-4 py-3 md:py-5 lg:grid lg:grid-cols-3 lg:gap-0 lg:max-w-[1000px] lg:mx-auto">
       {/* First Service Card */}
       {services.map((item, index) => (
-        <div
+        <article
           className="flex gap-2 bg-white relative max-h-[130px] items-center mx-2 rounded-md shadow-all_dark md:mx-5 md:min-h-[200px] md:gap-6 md:rounded-lg lg:flex-col lg:min-h-[400px] lg:text-center "
           key={index}
         >
@@ -64,7 +77,7 @@ const ServiceCards = () => {
               </span>
             </Link>
           </div>
-        </div>
+        </article>
       ))}
     </section>
   );
