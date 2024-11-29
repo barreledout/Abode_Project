@@ -11,12 +11,8 @@ interface Service {
   buttonText: string;
 }
 
-interface ServicesProps {
-  services: Service[]; // Array of `Service` objects
-}
-
 const ServiceCards = () => {
-  const services:Service[] = [
+  const services: Service[] = [
     {
       //Home estimate service
       serviceName: "Home_estimate",
