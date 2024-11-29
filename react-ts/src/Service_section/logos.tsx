@@ -9,7 +9,7 @@ export const HomeEstimateLogo = ({ className }: LogoProps) => {
     <div>
       <img
         src="../../../service_svgs/HomeEstimate.svg"
-        alt=""
+        alt="Home estimate serivce card logo"
         className={cn(`relative top-3 w-full h-full z-20`)}
       />
       <img
@@ -25,7 +25,7 @@ export const MarketAnalysisLogo = ({ className }: LogoProps) => {
     <div>
       <img
         src="../../../service_svgs/MarketAnalysis.svg"
-        alt=""
+        alt="Market analysis service card logo"
         className={cn(`relative top-3 w-full h-full z-20`)}
       />
       <img
@@ -41,7 +41,7 @@ export const InvestmentLogo = ({ className }: LogoProps) => {
     <div>
       <img
         src="../../../service_svgs/InvestmentAnalysis.svg"
-        alt=""
+        alt="Investment analysis service card logo"
         className={cn(`relative top-3 w-full h-full z-20`)}
       />
       <img
