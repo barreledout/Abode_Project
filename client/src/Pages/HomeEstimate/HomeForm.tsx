@@ -1,8 +1,11 @@
-import { useState } from "react";
+"use client";
+import schema from "./FormSchema";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
 import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
 import {
   Form,
   FormControl,
@@ -12,49 +15,164 @@ import {
   FormLabel,
   FormMessage,
 } from "../../components/ui/form";
-import { Input } from "../../components/ui/input";
-
-const schema = z.object({
-  Address: z.string().min(1, "Enter a property address"),
-  PropertyType: z.string(),
-  Radius: z.number().min(1),
-  Comparables: z.number(),
-});
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
+import { useState } from "react";
 
 type FormFields = z.infer<typeof schema>;
 
-const HomeForm = () => {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<FormFields>({
-    defaultValues: {
-      Comparables: 5,
-    },
+const HomeForm = ({
+  onEstimateSubmit,
+}: {
+  onEstimateSubmit: (formData: FormData) => void;
+}) => {
+  const [isSubmitted, setIsSubmitting] = useState<boolean>(false);
+  
+  const form = useForm<FormFields>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      Address: "",
+      PropertyType: "Single Family",
+      Radius: 1,
+      Comparables: 15,
+    },
   });
 
-  //   Async function to server
+  //TODO: submit to server
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    setIsSubmitting(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       console.log(data);
     } catch (error) {
-      setError("root", {
-        message: "Wrong address yur",
-      });
+      console.error(error);
     }
   };
 
   return (
-    <form
+    <Form {...form}>
+      <form
+        className="grid mt-5 gap-2 font-nunito"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        {/* Address */}
+        <FormField
+          control={form.control}
+          name="Address"
+          render={({ field }) => (
+            <FormItem className="mx-2">
+              <FormLabel className="text-base">Address</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="5500 Grand Lake Drive, San Antonio, TX, 78244"
+                  className="bg-white"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription className="lg:text-base">
+                Street, City, State, Zip or latitude/longitude
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Property Type */}
+        <FormField
+          control={form.control}
+          name="PropertyType"
+          render={({ field }) => (
+            <FormItem className="mx-2">
+              <FormLabel className="text-base">Property Type</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl className="bg-white">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a verified email to display" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent className="bg-white">
+                  <SelectItem value="Select A Property" disabled>
+                    Select A Property
+                  </SelectItem>
+                  <SelectItem value="Single Family">Single Family</SelectItem>
+                  <SelectItem value="Condo">Condo</SelectItem>
+                  <SelectItem value="Townhouse">Townhouse</SelectItem>
+                  <SelectItem value="Apartment">Apartment</SelectItem>
+                  <SelectItem value="Multi-Family">Multi-Family</SelectItem>
+                  <SelectItem value="Manufactured">Manufactured</SelectItem>
+                  <SelectItem value="Land">Land</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription></FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Radius */}
+        <FormField
+          control={form.control}
+          name="Radius"
+          render={({ field }) => (
+            <FormItem className="mx-2">
+              <FormLabel className="text-base">Radius (miles)</FormLabel>
+              <FormControl>
+                <Input placeholder="1" className="bg-white" {...field} />
+              </FormControl>
+              <FormDescription>
+                Distance between comparable listings and the subject property.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Comparable */}
+        <FormField
+          control={form.control}
+          name="Comparables"
+          render={({ field }) => (
+            <FormItem className="mx-2">
+              <FormLabel className="text-base">
+                Amount of Comparable Listings
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="5" className="bg-white" {...field} />
+              </FormControl>
+              <FormDescription>
+                The number of homes that will be used in the price evaluation.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button
+          type="submit"
+          className="bg-blue-300/30 mt-2 py-1 px-4 rounded-md max-w-[170px] mx-auto shadow-md font-[500] text-black"
+          disabled={isSubmitted}
+        >
+          Get Home Value
+        </Button>
+      </form>
+    </Form>
+  );
+};
+
+export default HomeForm;
+
+{
+  /* <form
       action=""
       className="grid mt-5 gap-2 font-nunito"
       onSubmit={handleSubmit(onSubmit)}
     >
-      {/* Address */}
+      
       <label htmlFor="Address" className="grid mx-2">
         Property Address:
         <input
@@ -72,7 +190,7 @@ const HomeForm = () => {
         )}
       </label>
 
-      {/* Property Type */}
+      
       <label htmlFor="PropertyType" className="grid mx-2">
         Property Type:
         <select
@@ -86,7 +204,7 @@ const HomeForm = () => {
         </select>
       </label>
 
-      {/* Radius */}
+      
       <label htmlFor="Radius" className="grid mx-2">
         Radius:
         <input
@@ -97,7 +215,7 @@ const HomeForm = () => {
         />
       </label>
 
-      {/* Comparable Properties */}
+      
       <label htmlFor="Comparable" className="grid mx-2">
         Amount of Comparable Properties:
         <input
@@ -117,8 +235,5 @@ const HomeForm = () => {
       {errors.root && (
         <span className="text-red-400 font-jost">{errors.root.message}</span>
       )}
-    </form>
-  );
-};
-
-export default HomeForm;
+    </form> */
+}
