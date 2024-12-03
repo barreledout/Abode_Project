@@ -11,8 +11,8 @@ const schema = z.object({
     "Manufactured",
     "Land",
   ]),
-  Radius: z.number().int().nonnegative().min(1, "Radius must be at least 1"), 
-  Comparables: z.number().int().min(5).max(25), 
+  Radius: z.coerce.number().nonnegative().min(1, "Radius must be at least 1"), 
+  Comparables: z.coerce.number().nonnegative().min(5).max(25), 
 });
 
 export default schema;
