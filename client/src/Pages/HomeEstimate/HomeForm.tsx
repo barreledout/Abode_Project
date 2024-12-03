@@ -48,7 +48,7 @@ const HomeForm = ({
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch("/api/homeData", {
+      const response = await fetch("http://localhost:5000/api/homeData", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
