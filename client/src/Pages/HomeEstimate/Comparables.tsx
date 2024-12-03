@@ -1,7 +1,16 @@
 import React from "react";
 
-const Comparables = ({ data }: FormData) => {
-  return <div></div>;
+interface ResultProps {
+  data: any;
+}
+
+const Comparables = ({ data }: ResultProps) => {
+  return (
+    <div>
+      <h1>Home Estimate</h1>
+      <div>{data}</div>
+    </div>
+  );
 };
 
 export default Comparables;
