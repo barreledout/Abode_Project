@@ -1,7 +1,10 @@
 import express, {Express, Request, Response} from "express";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
+import cors from "cors";
+
 
 const app = express();
+app.use(cors())
 const PORT = 5000;
 const rentCast_Key = process.env.RentCastKEY
 
