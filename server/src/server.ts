@@ -5,7 +5,7 @@ const app = express();
 const PORT = 5000;
 const rentCast_Key = process.env.RentCastKEY
 
-app.get("/api/homeData", (req, res) => {
+app.get("/api/homeData", (req: Request, res: Response) => {
     res.json({"hello": ["hi"]})
 })
 
