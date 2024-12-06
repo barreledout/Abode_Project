@@ -1,8 +1,8 @@
 import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
+import "dotenv/config";
 import cors from "cors";
 
-dotenv.config();
+
 
 const app = express();
 app.use(cors());
@@ -12,8 +12,8 @@ const PORT = 5000;
 
 app.post("/homeData", async (req: Request, res: Response) => {
   const { Address, PropertyType, Radius, Comparables } = req.body;
-  // DEFUNCT API KEY
-  const RENTCAST_TOKEN = "59c20821c724498fb6bfeb8780fca042";
+
+  const RENTCAST_TOKEN = (process.env.RENTCAST_TOKEN as string)
   console.log(RENTCAST_TOKEN);
   // Checks if the api key is present.
   if (!RENTCAST_TOKEN) {
