@@ -1,5 +1,6 @@
 "use client";
 import schema from "./FormSchema";
+import { ApiResponse } from "./HomeTypes";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -33,7 +34,7 @@ const HomeForm = ({
   onEstimateSubmit: (formData: FormData) => void;
 }) => {
   const [isSubmitted, setIsSubmitting] = useState<boolean>(false);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<ApiResponse | null>(null);
 
   const form = useForm<FormFields>({
     resolver: zodResolver(schema),
@@ -44,22 +45,26 @@ const HomeForm = ({
       Comparables: 15,
     },
   });
+  
   //TODO: submit to server
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch("http://localhost:5000/api/homeData", {
+      const response = await fetch("http://localhost:5000/homeData", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
+
       if (!response.ok) {
         throw new Error("Data not received");
       }
-      const result = await response.json();
+      const result: ApiResponse = await response.json();
       setData(result);
+      
+
     } catch (error) {
       console.error(error);
     } finally {
@@ -140,7 +145,13 @@ const HomeForm = ({
               <FormItem className="mx-2">
                 <FormLabel className="text-base">Radius (miles)</FormLabel>
                 <FormControl>
-                  <Input placeholder="1" className="bg-white" {...field} />
+                  <Input
+                    placeholder="1"
+                    className="bg-white"
+                    type="number"
+                    {...field}
+                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  />
                 </FormControl>
                 <FormDescription>
                   Distance between comparable listings and the subject property.
@@ -160,7 +171,13 @@ const HomeForm = ({
                   Amount of Comparable Listings
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="5" className="bg-white" {...field} />
+                  <Input
+                    placeholder="5"
+                    className="bg-white"
+                    {...field}
+                    type="number"
+                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  />
                 </FormControl>
                 <FormDescription>
                   The number of homes that will be used in the price evaluation.
@@ -172,7 +189,7 @@ const HomeForm = ({
 
           <Button
             type="submit"
-            className="bg-blue-300/30 mt-2 py-1 px-4 rounded-md max-w-[170px] mx-auto shadow-md font-[500] text-black"
+            className="bg-blue-300 hover:bg-blue-300/50 mt-2 py-1 px-4 rounded-md max-w-[170px] mx-auto shadow-md font-[500] text-black"
             disabled={isSubmitted}
           >
             Get Home Value
