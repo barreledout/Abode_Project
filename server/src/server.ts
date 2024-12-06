@@ -12,8 +12,9 @@ const PORT = 5000;
 
 app.post("/homeData", async (req: Request, res: Response) => {
   const { Address, PropertyType, Radius, Comparables } = req.body;
-  const RENTCAST_TOKEN="59c20821c724498fb6bfeb8780fca042"
-  console.log(RENTCAST_TOKEN)
+  // DEFUNCT API KEY
+  const RENTCAST_TOKEN = "59c20821c724498fb6bfeb8780fca042";
+  console.log(RENTCAST_TOKEN);
   // Checks if the api key is present.
   if (!RENTCAST_TOKEN) {
     throw new Error("RentCast API key is missing or undefined");
