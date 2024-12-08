@@ -1,17 +1,19 @@
-import { ApiResponse } from "./HomeTypes";
+import { ApiResponse} from "./HomeTypes";
 
 type ComparableProps = {
   data: ApiResponse;
 };
 
+
 const Comparables = ({ data }: ComparableProps) => {
+
   return (
     <section>
       <div>
         <div className="text-center font-nunito my-16">
-          <h1 className="text-2xl font-[600]">Home Estimate:</h1>
+          <h1 className="text-2xl font-[600] md:text-4xl ">Home Estimate:</h1>
           <div>
-            <h2 className="pt-2 text-2xl text-blue-600 font-[600]">
+            <h2 className="pt-2 text-2xl text-blue-600 font-[600] md:text-4xl">
               {data.price
                 ? `$${data.price.toLocaleString()}`
                 : `Price Not Available`}
@@ -20,42 +22,42 @@ const Comparables = ({ data }: ComparableProps) => {
         </div>
 
         <div>
-          <h1 className="text-2xl font-[600] font-nunito text-center">
+          <h1 className="text-2xl font-[600] pb-3 text-center font-jost md:text-3xl">
             Comparable Properties
           </h1>
           <div className="">
-            <ul className="flex flex-col gap-2 mx-2 pt-2  md:grid md:grid-cols-4">
+            <ul className="flex flex-col gap-2 mx-2 pt-2 md:grid md:grid-cols-3 md:px-3">
               {data.comparables.map((comparable) => (
                 <li
                   key={comparable.id}
-                  className="bg-slate-300 p-2 rounded-sm text-center font-nunito"
+                  className="bg-slate-300 p-2 rounded-sm  font-nunito"
                 >
-                  <p>
-                    <span className="font-[700]">Address:</span>{" "}
+                  <p className="">
+                    <span className="font-[500] lg:text-lg ">Address:</span>{" "}
                     {comparable.formattedAddress}
                   </p>
-                  <p>
-                    <span className="font-[700]">Price:</span>{" "}
+                  <p className="">
+                    <span className="font-[500] lg:text-lg ">Price:</span>{" "}
                     {`$${comparable.price.toLocaleString()}`}
                   </p>
-                  <p>
-                    <span className="font-[700]">Property Type:</span>{" "}
+                  <p className="hidden md:block">
+                    <span className="font-[500] lg:text-lg ">Property Type:</span>{" "}
                     {comparable.propertyType}
                   </p>
-                  <p>
-                    <span className="font-[700]">Bedrooms:</span>{" "}
+                  <p className="hidden md:block">
+                    <span className="font-[500] lg:text-lg ">Bedrooms:</span>{" "}
                     {comparable.bedrooms}
                   </p>
-                  <p>
-                    <span className="font-[700]">Bathrooms:</span>{" "}
+                  <p className="hidden md:block">
+                    <span className="font-[500] lg:text-lg ">Bathrooms:</span>{" "}
                     {comparable.bathrooms}
                   </p>
-                  <p>
-                    <span className="font-[700]">Square Footage:</span>{" "}
+                  <p className="hidden md:block">
+                    <span className="font-[500] lg:text-lg ">Square Footage:</span>{" "}
                     {comparable.squareFootage}
                   </p>
-                  <p>
-                    <span className="font-[700]">Correlation:</span>{" "}
+                  <p className="">
+                    <span className="font-[500] lg:text-lg ">Correlation:</span>{" "}
                     {comparable.correlation}
                   </p>
                 </li>
