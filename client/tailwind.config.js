@@ -20,6 +20,7 @@ export default {
         parkinsans: ["parkinsans", "sans-serif"],
         nunito: ["Nunito", "sans-serif"],
         jost: ["Jost", "sans-serif"],
+        geistSans: ["Geist", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
