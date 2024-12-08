@@ -45,8 +45,7 @@ const HomeForm = ({
       Comparables: 15,
     },
   });
-  
-  //TODO: submit to server
+
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     setIsSubmitting(true);
     try {
@@ -63,8 +62,6 @@ const HomeForm = ({
       }
       const result: ApiResponse = await response.json();
       setData(result);
-      
-
     } catch (error) {
       console.error(error);
     } finally {
@@ -77,7 +74,7 @@ const HomeForm = ({
       <Form {...form}>
         <form
           action="/api/homeData"
-          className="grid mt-5 gap-2 font-nunito"
+          className="grid mt-5 gap-2 font-geistSans lg:grid-cols-2 lg:px-6 "
           onSubmit={form.handleSubmit(onSubmit)}
         >
           {/* Address */}
@@ -86,11 +83,11 @@ const HomeForm = ({
             name="Address"
             render={({ field }) => (
               <FormItem className="mx-2">
-                <FormLabel className="text-base">Address</FormLabel>
+                <FormLabel className="text-base lg:text-2xl">Address</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="5500 Grand Lake Drive, San Antonio, TX, 78244"
-                    className="bg-white"
+                    className="bg-white lg:text-base"
                     {...field}
                   />
                 </FormControl>
@@ -108,17 +105,17 @@ const HomeForm = ({
             name="PropertyType"
             render={({ field }) => (
               <FormItem className="mx-2">
-                <FormLabel className="text-base">Property Type</FormLabel>
+                <FormLabel className="text-base lg:text-2xl">Property Type</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
-                  <FormControl className="bg-white">
+                  <FormControl className="bg-white lg:text-base">
                     <SelectTrigger>
                       <SelectValue placeholder="Select a verified email to display" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent className="bg-white">
+                  <SelectContent className="bg-white ">
                     <SelectItem value="Select A Property" disabled>
                       Select A Property
                     </SelectItem>
@@ -143,17 +140,17 @@ const HomeForm = ({
             name="Radius"
             render={({ field }) => (
               <FormItem className="mx-2">
-                <FormLabel className="text-base">Radius (miles)</FormLabel>
+                <FormLabel className="text-base lg:text-2xl">Radius (miles)</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="1"
-                    className="bg-white"
+                    className="bg-white lg:text-base"
                     type="number"
                     {...field}
                     onChange={(e) => field.onChange(e.target.valueAsNumber)}
                   />
                 </FormControl>
-                <FormDescription>
+                <FormDescription className="lg:text-base">
                   Distance between comparable listings and the subject property.
                 </FormDescription>
                 <FormMessage />
@@ -167,19 +164,19 @@ const HomeForm = ({
             name="Comparables"
             render={({ field }) => (
               <FormItem className="mx-2">
-                <FormLabel className="text-base">
+                <FormLabel className="text-base lg:text-2xl">
                   Amount of Comparable Listings
                 </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="5"
-                    className="bg-white"
+                    className="bg-white lg:text-base"
                     {...field}
                     type="number"
                     onChange={(e) => field.onChange(e.target.valueAsNumber)}
                   />
                 </FormControl>
-                <FormDescription>
+                <FormDescription className="lg:text-base">
                   The number of homes that will be used in the price evaluation.
                 </FormDescription>
                 <FormMessage />
@@ -187,13 +184,15 @@ const HomeForm = ({
             )}
           />
 
-          <Button
-            type="submit"
-            className="bg-blue-300 hover:bg-blue-300/50 mt-2 py-1 px-4 rounded-md max-w-[170px] mx-auto shadow-md font-[500] text-black"
-            disabled={isSubmitted}
-          >
-            Get Home Value
-          </Button>
+          <div className="items-center mt-5 flex lg:relative lg:left-1/2 "> 
+            <Button
+              type="submit"
+              className="bg-blue-300 hover:bg-blue-300/50 py-1 px-4 rounded-md max-w-[170px] mx-auto shadow-md font-[500] text-black lg:min-w-[300px] lg:text-lg"
+              disabled={isSubmitted}
+            >
+              Get Home Value
+            </Button>
+          </div>
         </form>
       </Form>
       {data && <Comparables data={data} />}
@@ -203,74 +202,3 @@ const HomeForm = ({
 
 export default HomeForm;
 
-{
-  /* <form
-      action=""
-      className="grid mt-5 gap-2 font-nunito"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      
-      <label htmlFor="Address" className="grid mx-2">
-        Property Address:
-        <input
-          {...register("Address", {
-            required: "Property Address is required.",
-          })}
-          type="text"
-          id="Address"
-          className="border border-[1px] rounded-md "
-        />
-        {errors.Address && (
-          <span className="text-red-400 font-jost">
-            {errors.Address.message}
-          </span>
-        )}
-      </label>
-
-      
-      <label htmlFor="PropertyType" className="grid mx-2">
-        Property Type:
-        <select
-          id=""
-          className="border border-[1px] rounded-md"
-          {...register("PropertyType")}
-        >
-          <option value="Select Property Type" disabled>
-            Select Property Type
-          </option>
-        </select>
-      </label>
-
-      
-      <label htmlFor="Radius" className="grid mx-2">
-        Radius:
-        <input
-          {...register("Radius")}
-          type="number"
-          id="Radius"
-          className="border border-[1px] rounded-md"
-        />
-      </label>
-
-      
-      <label htmlFor="Comparable" className="grid mx-2">
-        Amount of Comparable Properties:
-        <input
-          {...register("Comparables")}
-          type="number"
-          id="Comparable"
-          className="border border-[1px] rounded-md"
-        />
-      </label>
-      <button
-        disabled={isSubmitting}
-        type="submit"
-        className="bg-blue-300/30 mt-2 py-1 px-4 rounded-md max-w-[170px] mx-auto shadow-sm font-[500]"
-      >
-        {isSubmitting ? "Getting Shitted" : "Get Home Value"}
-      </button>
-      {errors.root && (
-        <span className="text-red-400 font-jost">{errors.root.message}</span>
-      )}
-    </form> */
-}
