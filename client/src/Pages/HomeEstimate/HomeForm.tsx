@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select";
-import { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Comparables from "./Comparables";
 
 type FormFields = z.infer<typeof schema>;
@@ -31,13 +31,17 @@ type FormFields = z.infer<typeof schema>;
 const HomeForm = () => {
   const [isSubmitted, setIsSubmitting] = useState<boolean>(false);
   const [data, setData] = useState<ApiResponse | null>(null);
+  const childRef = useRef<HTMLElement>(null);
 
-  if (data) {
-    document.getElementById("comparables")?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest"
-    });
-  }
+  // Scrolls screen down to comparables once the data is received from API.
+  useEffect(() => {
+    if (data && childRef.current) {
+      childRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [data]);
 
   const form = useForm<FormFields>({
     resolver: zodResolver(schema),
@@ -108,7 +112,9 @@ const HomeForm = () => {
             name="PropertyType"
             render={({ field }) => (
               <FormItem className="mx-2">
-                <FormLabel className="text-base lg:text-2xl">Property Type</FormLabel>
+                <FormLabel className="text-base lg:text-2xl">
+                  Property Type
+                </FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -143,7 +149,9 @@ const HomeForm = () => {
             name="Radius"
             render={({ field }) => (
               <FormItem className="mx-2">
-                <FormLabel className="text-base lg:text-2xl">Radius (miles)</FormLabel>
+                <FormLabel className="text-base lg:text-2xl">
+                  Radius (miles)
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="1"
@@ -187,7 +195,7 @@ const HomeForm = () => {
             )}
           />
 
-          <div className="items-center mt-5 flex lg:relative lg:left-1/2 "> 
+          <div className="items-center mt-5 flex lg:relative lg:left-1/2 ">
             <Button
               type="submit"
               className="bg-blue-300 hover:bg-blue-300/50 py-1 px-4 rounded-md max-w-[170px] mx-auto shadow-md font-[500] text-black lg:min-w-[300px] lg:text-lg"
@@ -198,10 +206,9 @@ const HomeForm = () => {
           </div>
         </form>
       </Form>
-      {data && <Comparables data={data} />}
+      {data && <Comparables data={data} ref={childRef} />}
     </>
   );
 };
 
 export default HomeForm;
-

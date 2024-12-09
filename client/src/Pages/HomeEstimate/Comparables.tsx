@@ -1,15 +1,19 @@
+"use client"
+import { forwardRef } from "react";
 import { ApiResponse } from "./HomeTypes";
 
 type ComparableProps = {
   data: ApiResponse;
 };
 
-const Comparables = ({ data }: ComparableProps) => {
+const Comparables = forwardRef<HTMLElement, ComparableProps>(({ data }, ref) => {
   return (
-    <section>
+    <section id="comparables" ref={ref}>
       <div>
         <div className="text-center font-nunito my-16">
-          <h1 className="text-2xl font-[700] md:text-3xl lg:text-4xl ">Home Estimate:</h1>
+          <h1 className="text-2xl font-[700] md:text-3xl lg:text-4xl ">
+            Home Estimate:
+          </h1>
           <div>
             <h2 className="pt-2 text-2xl text-blue-600 font-[600] font-geistSans md:text-4xl">
               {data.price
@@ -31,11 +35,15 @@ const Comparables = ({ data }: ComparableProps) => {
                   className="grid bg-slate-300 p-2 rounded-sm font-nunito"
                 >
                   <span className="">
-                    <span className="font-[600] font-geistSans lg:text-lg ">Address:</span>{" "}
+                    <span className="font-[600] font-geistSans lg:text-lg ">
+                      Address:
+                    </span>{" "}
                     {comparable.formattedAddress}
                   </span>
                   <span className="">
-                    <span className="font-[600] font-geistSans lg:text-lg ">Price:</span>{" "}
+                    <span className="font-[600] font-geistSans lg:text-lg ">
+                      Price:
+                    </span>{" "}
                     {`$${comparable.price.toLocaleString()}`}
                   </span>
                   <span className="hidden md:block">
@@ -45,11 +53,15 @@ const Comparables = ({ data }: ComparableProps) => {
                     {comparable.propertyType}
                   </span>
                   <span className="hidden md:block">
-                    <span className="font-[600] font-geistSans lg:text-lg ">Bedrooms:</span>{" "}
+                    <span className="font-[600] font-geistSans lg:text-lg ">
+                      Bedrooms:
+                    </span>{" "}
                     {comparable.bedrooms}
                   </span>
                   <span className="hidden md:block">
-                    <span className="font-[600] font-geistSans lg:text-lg ">Bathrooms:</span>{" "}
+                    <span className="font-[600] font-geistSans lg:text-lg ">
+                      Bathrooms:
+                    </span>{" "}
                     {comparable.bathrooms}
                   </span>
                   <span className="hidden md:block">
@@ -59,7 +71,9 @@ const Comparables = ({ data }: ComparableProps) => {
                     {comparable.squareFootage}
                   </span>
                   <span className="">
-                    <span className="font-[600] font-geistSans lg:text-lg ">Correlation:</span>{" "}
+                    <span className="font-[600] font-geistSans lg:text-lg ">
+                      Correlation:
+                    </span>{" "}
                     {(comparable.correlation * 100).toFixed(2) + "%"}
                   </span>
                 </li>
@@ -70,6 +84,6 @@ const Comparables = ({ data }: ComparableProps) => {
       </div>
     </section>
   );
-};
+});
 
 export default Comparables;
