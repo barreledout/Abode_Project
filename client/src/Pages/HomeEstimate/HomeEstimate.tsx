@@ -4,12 +4,7 @@ import HomeForm from "./HomeForm";
 import Comparables from "./Comparables";
 
 const HomeEstimate = () => {
-  const [formData, setFormData] = useState<FormData | null>(null);
-
-  const handleFormSubmit = (data: FormData) => {
-    setFormData(data);
-  }
-
+  
   return (
     <section className="bg-gray-300/45 pt-10 pb-3">
       <div className="text-center">
@@ -17,7 +12,7 @@ const HomeEstimate = () => {
           Home Value Estimator
         </h1>
       </div>
-      <HomeForm onEstimateSubmit={handleFormSubmit}/>
+      <HomeForm />
       
     </section>
   );

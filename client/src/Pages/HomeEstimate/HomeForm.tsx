@@ -23,18 +23,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Comparables from "./Comparables";
 
 type FormFields = z.infer<typeof schema>;
 
-const HomeForm = ({
-  onEstimateSubmit,
-}: {
-  onEstimateSubmit: (formData: FormData) => void;
-}) => {
+const HomeForm = () => {
   const [isSubmitted, setIsSubmitting] = useState<boolean>(false);
   const [data, setData] = useState<ApiResponse | null>(null);
+
+  if (data) {
+    document.getElementById("comparables")?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
+  }
 
   const form = useForm<FormFields>({
     resolver: zodResolver(schema),
