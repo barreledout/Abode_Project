@@ -34,9 +34,7 @@ app.post("/homeData", async (req: Request, res: Response) => {
   };
 
   try {
-    const [rentCastResponse] = await Promise.all([
-      fetch(rentCast_url, options),
-    ]);
+    const rentCastResponse = await fetch(rentCast_url, options);
 
     const rentCastData = await rentCastResponse.json();
     res.json(rentCastData);
