@@ -81,7 +81,7 @@ const HomeForm = () => {
       <Form {...form}>
         <form
           action="/api/homeData"
-          className="grid mt-5 gap-2 font-geistSans lg:grid-cols-2 lg:px-6 "
+          className="grid mt-5 gap-2 font-geistSans md:max-w-[600px] mq400w:justify-center mq400w:mx-auto lg:grid-cols-2 lg:px-6 lg:min-w-[900px] "
           onSubmit={form.handleSubmit(onSubmit)}
         >
           {/* Address */}
