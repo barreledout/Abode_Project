@@ -43,6 +43,7 @@ const HomeForm = () => {
     }
   }, [data]);
 
+  // Form schema
   const form = useForm<FormFields>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -53,6 +54,7 @@ const HomeForm = () => {
     },
   });
 
+  // Function to the server when button is clicked
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     setIsSubmitting(true);
     try {
@@ -64,8 +66,8 @@ const HomeForm = () => {
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        throw new Error("Data not received");
+      if (response.status === 500) {
+        throw new Error("Poop");
       }
       const result: ApiResponse = await response.json();
       setData(result);
@@ -200,6 +202,7 @@ const HomeForm = () => {
               type="submit"
               className="bg-blue-300/30 hover:bg-blue-300/30 py-1 px-4 rounded-md max-w-[170px] mx-auto shadow-md font-[500] text-black lg:min-w-[300px] lg:text-lg"
               disabled={isSubmitted}
+              
             >
               Get Home Value
             </Button>
