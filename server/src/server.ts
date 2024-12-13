@@ -3,6 +3,7 @@ import express, { Express, Request, Response } from "express";
 import "dotenv/config";
 import cors from "cors";
 import { error } from "console";
+import { mock } from "node:test";
 
 const app = express();
 app.use(cors({ origin: "http://localhost:3000" }));
@@ -13,7 +14,8 @@ const PORT = 5000;
 // RENTCAST API & Supabase
 app.post("/homeData", async (req: Request, res: Response) => {
   const { Address, PropertyType, Radius, Comparables } = req.body;
-  
+
+  console.log(req.body);
 
   const RENTCAST_TOKEN = process.env.RENTCAST_TOKEN as string;
 
@@ -37,31 +39,35 @@ app.post("/homeData", async (req: Request, res: Response) => {
 
   try {
     // Checking Supabase db if the total api request is <= 50 & if it's not dont allow anymore request
-
     const supabaseData = await fetchToSupabase();
     if (supabaseData) {
       const requestCount = supabaseData[0]?.request_count;
+      const resetDate = supabaseData[0]?.reset_date;
+      const rowId = supabaseData[0]?.id;
 
-      // checks the request_count column
-      if (requestCount && requestCount < 50) {
-        // fetch to RentCast API.
-        const rentCastResponse = await fetch(rentCast_url, options);
-        const rentCastData = await rentCastResponse.json();
+      // Check if reset date has passed to update the request count back to 0.
+      const currentDate: Date = new Date();
+      if (new Date(resetDate) < currentDate) {
+        await updateRequestCount(0, rowId);
+      } else {
+        console.log("date is good");
+        if (requestCount && requestCount < 50) {
+          // fetch to RentCast API.
+          const rentCastResponse = await fetch(rentCast_url, options);
+          const rentCastData = await rentCastResponse.json();
 
-        // send data back to users.
-        res.json(rentCastData);
+          // send data back to users.
+          res.json(rentCastData);
 
-        // update the request_count in database
-        const rowId = supabaseData[0]?.id;
-        if (rowId) {
+          // update the request_count in database
           await updateRequestCount(requestCount + 1, rowId);
         } else {
-          res.status(500).json({ error: "ID not found in Supabase data" });
+          console.log("Successfully prevented fetching data.");
+          console.log("request count:", requestCount);
+          res.status(500).json({
+            error: "API request limit has reach its max. Try again later",
+          });
         }
-      } else {
-        res.status(500).json({
-          error: "API request limit has reach its max. Try again later",
-        });
       }
     }
   } catch (error) {
@@ -71,7 +77,7 @@ app.post("/homeData", async (req: Request, res: Response) => {
 
 interface supabaseDataRow {
   request_count: number;
-  request_date: string;
+  reset_date: string;
   id: string;
 }
 
@@ -89,7 +95,6 @@ const fetchToSupabase = async (): Promise<supabaseDataRow[] | null> => {
     return null;
   }
 
-  console.log("db: ", data);
   return data;
 };
 
