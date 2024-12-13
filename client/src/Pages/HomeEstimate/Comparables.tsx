@@ -19,6 +19,9 @@ const Comparables = forwardRef<HTMLElement, ComparableProps>(
       if (httpStatus >= 200 && httpStatus <= 299) {
         return <ComparablesList data={data} />
       }
+      else if (httpStatus >= 400 && httpStatus <= 599) {
+        return <ErrorScreen statusCode={httpStatus} />
+      }
     }
 
     return (
