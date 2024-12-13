@@ -32,6 +32,7 @@ const HomeForm = () => {
   const [isSubmitted, setIsSubmitting] = useState<boolean>(false);
   const [data, setData] = useState<ApiResponse | null>(null);
   const childRef = useRef<HTMLElement>(null);
+  const [status, setStatus] = useState<number>(0);
 
   // Scrolls screen down to comparables once the data is received from API.
   useEffect(() => {
@@ -67,7 +68,7 @@ const HomeForm = () => {
       });
 
       if (response.status === 500) {
-        throw new Error("Poop");
+        setStatus(response.status)
       }
       const result: ApiResponse = await response.json();
       setData(result);
@@ -202,14 +203,13 @@ const HomeForm = () => {
               type="submit"
               className="bg-blue-300/30 hover:bg-blue-300/30 py-1 px-4 rounded-md max-w-[170px] mx-auto shadow-md font-[500] text-black lg:min-w-[300px] lg:text-lg"
               disabled={isSubmitted}
-              
             >
               Get Home Value
             </Button>
           </div>
         </form>
       </Form>
-      {data && <Comparables data={data} ref={childRef} />}
+      {data && <Comparables data={data} ref={childRef} httpStatus={status}/>}
     </>
   );
 };
