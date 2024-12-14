@@ -35,7 +35,6 @@ interface ErrorDataProp {
   requestAmount: number;
 }
 
-
 const HomeForm = () => {
   const [isSubmitted, setIsSubmitting] = useState<boolean>(false);
   const [data, setData] = useState<ApiResponse | null>(null);
@@ -83,7 +82,7 @@ const HomeForm = () => {
         const { message, requestAmount }: ErrorDataProp = errorData;
         setStatus(response.status);
         setErrorMessage(message);
-        setRequestAmount(requestAmount)
+        setRequestAmount(requestAmount);
       }
       const result: ApiResponse = await response.json();
       setData(result);
@@ -216,7 +215,7 @@ const HomeForm = () => {
             <Button
               type="submit"
               className="bg-blue-300/30 hover:bg-blue-300/30 py-1 px-4 rounded-md max-w-[170px] mx-auto shadow-md font-[500] text-black lg:min-w-[300px] lg:text-lg"
-              disabled={isSubmitted}
+              disabled={isSubmitted || errorMessage !== null}
             >
               Get Home Value
             </Button>
