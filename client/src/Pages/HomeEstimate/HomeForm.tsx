@@ -1,5 +1,6 @@
 "use client";
 import schema from "./FormSchema";
+
 import { ApiResponse } from "./HomeTypes";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,24 +26,33 @@ import {
 } from "../../components/ui/select";
 import { useState, useRef, useEffect } from "react";
 import Comparables from "./Comparables";
+import ErrorScreen from "../../ErrorScreen";
 
 type FormFields = z.infer<typeof schema>;
+
+interface ErrorDataProp {
+  message: string;
+  requestAmount: number;
+}
+
 
 const HomeForm = () => {
   const [isSubmitted, setIsSubmitting] = useState<boolean>(false);
   const [data, setData] = useState<ApiResponse | null>(null);
   const childRef = useRef<HTMLElement>(null);
   const [status, setStatus] = useState<number>(0);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [requestAmount, setRequestAmount] = useState<number>(0);
 
-  // Scrolls screen down to comparables once the data is received from API.
+  // Scrolls screen down to comparables or error screen once the data is received from API.
   useEffect(() => {
-    if (data && childRef.current) {
+    if (data || (status >= 400 && childRef.current)) {
       childRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
     }
-  }, [data]);
+  }, [data, status]);
 
   // Form schema
   const form = useForm<FormFields>({
@@ -67,13 +77,17 @@ const HomeForm = () => {
         body: JSON.stringify(data),
       });
 
-      if (response.status === 500) {
-        setStatus(response.status)
+      // if the request failed
+      if (!response.ok) {
+        const errorData = await response.json();
+        const { message, requestAmount }: ErrorDataProp = errorData;
+        setStatus(response.status);
+        setErrorMessage(message);
+        setRequestAmount(requestAmount)
       }
       const result: ApiResponse = await response.json();
       setData(result);
     } catch (error) {
-      console.error(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -209,7 +223,16 @@ const HomeForm = () => {
           </div>
         </form>
       </Form>
-      {data && <Comparables data={data} ref={childRef} httpStatus={status}/>}
+      {status >= 400 ? (
+        <ErrorScreen
+          statusCode={status}
+          ref={childRef}
+          errorMessage={errorMessage}
+          progressBar={requestAmount}
+        />
+      ) : (
+        data && <Comparables data={data} ref={childRef} />
+      )}
     </>
   );
 };

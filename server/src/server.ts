@@ -50,7 +50,7 @@ app.post("/homeData", async (req: Request, res: Response) => {
       if (new Date(resetDate) < currentDate) {
         await updateRequestCount(0, rowId);
       } else {
-        console.log("date is good");
+        // Check if request_count from DB has yet to reach the limit of 50.
         if (requestCount && requestCount < 50) {
           // fetch to RentCast API.
           const rentCastResponse = await fetch(rentCast_url, options);
@@ -61,17 +61,24 @@ app.post("/homeData", async (req: Request, res: Response) => {
 
           // update the request_count in database
           await updateRequestCount(requestCount + 1, rowId);
+
+          // Send error if request_count has reached its limit of 50.
         } else {
           console.log("Successfully prevented fetching data.");
           console.log("request count:", requestCount);
-          res.status(500).json({
-            error: "API request limit has reach its max. Try again later",
-          });
+          res
+            .status(500)
+            .json({
+              message: `API usage amount has reached the monthly limit. Try again after ${new Date(
+                resetDate
+              ).toLocaleDateString("en-US")}.`,
+              requestAmount: (requestCount / 50) * 100
+            });
         }
       }
     }
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch home data." });
+    res.status(500).json("Failed to fetch home data.");
   }
 });
 
