@@ -83,10 +83,12 @@ const HomeForm = () => {
         setStatus(response.status);
         setErrorMessage(message);
         setRequestAmount(requestAmount);
+        return;
       }
       const result: ApiResponse = await response.json();
       setData(result);
     } catch (error) {
+      console.error(error)
     } finally {
       setIsSubmitting(false);
     }
