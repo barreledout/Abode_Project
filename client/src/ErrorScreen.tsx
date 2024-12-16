@@ -1,6 +1,12 @@
 import { forwardRef, useState } from "react";
 import { IoReload } from "react-icons/io5";
+import { RxQuestionMarkCircled } from "react-icons/rx";
 import { Progress } from "./components/ui/progress";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "./components/ui/popover";
 
 type ErrorProps = {
   statusCode: number;
@@ -27,10 +33,20 @@ const ErrorScreen = forwardRef<HTMLElement, ErrorProps>(
               {`${errorMessage}`}
             </p>
 
-            <Progress
-              value={progressBar}
-              aria-label="Progress bar of how many request have been sent to the API."
-            />
+            <div className="flex items-center gap-1">
+              <Progress
+                value={progressBar}
+                aria-label="Progress bar of how many request have been sent to the API."
+              />
+              <Popover>
+                <PopoverTrigger>
+                  <RxQuestionMarkCircled />
+                </PopoverTrigger>
+                <PopoverContent about="What the progress bar is about" className="relative -left-4 top-0 ">
+                  50 API request per month. Current: <b>{progressBar / 2}/50</b> request.
+                </PopoverContent>
+              </Popover>
+            </div>
 
             <button
               type="button"
