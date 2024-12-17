@@ -43,11 +43,11 @@ const ServiceCards = () => {
   ];
 
   return (
-    <section className="flex flex-col gap-4 py-3 md:py-5 lg:grid lg:grid-cols-3 lg:gap-0 lg:max-w-[1000px] lg:mx-auto">
+    <section className="grid gap-4 py-3 md:py-5 lg:grid-cols-3 lg:max-w-[900px] lg:mx-auto">
       {/* First Service Card */}
       {services.map((item, index) => (
         <article
-          className="flex gap-2 bg-white relative max-h-[130px] items-center mx-2 rounded-md shadow-all_dark md:mx-5 md:min-h-[200px] md:gap-6 md:rounded-lg lg:flex-col lg:min-h-[400px] lg:text-center "
+          className="flex gap-2 bg-white relative max-h-[130px] items-center mx-2 rounded-md shadow-all_dark md:mx-5 md:min-h-[200px] md:gap-6 md:rounded-lg lg:flex-col lg:min-h-[400px] lg: lg:text-center lg:mx-1"
           key={index}
         >
           {/* Service logo */}
