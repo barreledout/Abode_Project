@@ -59,13 +59,13 @@ const Navbar = () => {
           <div className="hidden sm:block">
             <nav className="flex justify-between items-center font-nunito text-sm gap-4 md:text-base lg:text-lg truncate">
               <Link to="/home_value_estimator">
-                <span className="">Home Value Estimator</span>
+                <span className="hover:text-slate-950/70">Home Value Estimator</span>
               </Link>
               <Link to="/market_analysis">
-                <span className="">Market Analysis</span>
+                <span className="hover:text-slate-950/70">Market Analysis</span>
               </Link>
               <Link to="/real_estate_investment_tool">
-                <span className="">Real Estate Investment Tool</span>
+                <span className="hover:text-slate-950/70">Real Estate Investment Tool</span>
               </Link>
             </nav>
           </div>
@@ -76,17 +76,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-{
-  /* <nav className="flex justify-between items-center font-nunito text-[.8em] gap-4 gap-4 ">
-          <Link to="/home_value_estimator">
-            <h1 className="">Home Value Estimator</h1>
-          </Link>
-          <Link to="/market_analysis">
-            <h1 className="">Market Analysis</h1>
-          </Link>
-          <Link to="/real_estate_investment_tool">
-            <h1 className="">Real Estate Investment Tool</h1>
-          </Link>
-        </nav> */
-}

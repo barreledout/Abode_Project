@@ -66,9 +66,9 @@ const ServiceCards = () => {
             </div>
             <Link
               to={item.linkHref}
-              className="bg-blue-300/30 max-w-[150px] flex items-center text-center p-0.5 rounded-sm md:min-w-[200px] md:min-h-[30px] lg:relative lg:left-1/2 lg:-translate-x-24 lg:max-h-[50px]"
+              className="bg-blue-300/30 hover:scale-105 hover:shadow-md transition-all max-w-[150px] flex items-center text-center p-0.5 rounded-sm md:min-w-[200px] md:min-h-[30px] lg:relative lg:left-1/2 lg:-translate-x-24 lg:max-h-[50px]"
             >
-              <span className="font-[500] text-[.9em] font-geistSans w-full sm:text-xs md:text-base ">
+              <span className="font-[600] text-[.9em] font-nunito w-full sm:text-xs md:text-base ">
                 {item.buttonText}
               </span>
             </Link>
