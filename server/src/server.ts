@@ -47,6 +47,10 @@ app.post("/homeData", async (req: Request, res: Response) => {
 
       // Check if reset date has passed to update the request count back to 0.
       const currentDate: Date = new Date();
+      const currentYear: number = new Date().getFullYear();
+
+      updateResetDate(currentYear);
+
       if (new Date(resetDate) <= currentDate) {
         await updateRequestCount(0, rowId);
       }
@@ -132,27 +136,65 @@ const updateRequestCount = async (newRequestCount: number, id: string) => {
 };
 
 // Updating the reset date in database
-const updateResetDate = async (newResetDate: Date) => {
+const updateResetDate = async (newResetDate: number) => {
   const { error } = (await supabase
     .from("api_limit")
-    .update({ reset_date: newResetDate })
+    .update({ reset_date: checkResetDate })
     .select()) as {
     error: unknown;
   };
 
-  if (error) {
-    return `Failed to update the reset date. Error: ${error}`;
+  try {
+    checkResetDate(newResetDate);
+  } catch (error) {
+    console.error(error);
   }
 };
 
 // Checking if we need to update to next reset date if current date <= reset date.
-const checkResetDate = (date: Date) => {
-  // check if the month has 28 (29), 30, or 31 days.
-  checkAmountOfDays(date);
-};
+const checkResetDate = (currentYear: number) => {
+  const nonLeapYear = new Map<number, number>([
+    [0, 31], // January
+    [1, 28], // Febuary
+    [2, 31], // March
+    [3, 30], // April
+    [4, 31], // May
+    [5, 30], //June
+    [6, 31], //July
+    [7, 31], //August
+    [8, 30], //September
+    [9, 31], //October
+    [10, 30], // November
+    [11, 31], // December
+  ]);
 
-const checkAmountOfDays = (date: Date) => {
-  let nextMonth = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+  const leapYear = new Map<number, number>([
+    [0, 31], // January
+    [1, 28], // Febuary
+    [2, 31], // March
+    [3, 30], // April
+    [4, 31], // May
+    [5, 30], //June
+    [6, 31], //July
+    [7, 31], //August
+    [8, 30], //September
+    [9, 31], //October
+    [10, 30], // November
+    [11, 31], // December
+  ]);
+
+  // FIX - INCORRECT LEAP YEAR CALCULATIONS
+  if (currentYear % 4 === 0) {
+    let currentMonth: number = new Date().getMonth();
+    if (leapYear.has(currentMonth)) {
+      return leapYear.get(currentMonth);
+    }
+  } else {
+    let currentMonth: number = new Date().getMonth();
+    if (nonLeapYear.has(currentMonth)) {
+      return nonLeapYear.get(currentMonth);
+    }
+  }
 };
 
 app.listen(PORT, () => console.log(`Server is listening on port: ${PORT}`));
