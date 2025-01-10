@@ -41,18 +41,23 @@ app.post("/homeData", async (req: Request, res: Response) => {
     // Checking Supabase db if the total api request is <= 50 & if it's not dont allow anymore request
     const supabaseData = await fetchToSupabase();
     if (supabaseData) {
-      const requestCount = supabaseData[0]?.request_count;
-      const resetDate = supabaseData[0]?.reset_date;
-      const rowId = supabaseData[0]?.id;
+      const requestCount: number = supabaseData[0]?.request_count;
+      const resetDate: string = supabaseData[0]?.reset_date;
+      const rowId: string = supabaseData[0]?.id;
 
-      // Check if reset date has passed to update the request count back to 0.
+      const requestLimit: number = 50;
+
+      // Check if reset date has passed to update the request count back to 0 and replace with new reset date.
       const currentDate: Date = new Date();
+      const currentYear: number = new Date().getFullYear();
+
       if (new Date(resetDate) <= currentDate) {
         await updateRequestCount(0, rowId);
+        await updateResetDate(currentYear, resetDate);
       }
 
       // Check if request_count from DB has yet to reach the limit of 50.
-      if (requestCount && requestCount < 50) {
+      if (requestCount && requestCount < requestLimit) {
         // fetch to RentCast API.
         const rentCastResponse = await fetch(rentCast_url, options);
         const rentCastData = await rentCastResponse.json();
@@ -132,27 +137,37 @@ const updateRequestCount = async (newRequestCount: number, id: string) => {
 };
 
 // Updating the reset date in database
-const updateResetDate = async (newResetDate: Date) => {
-  const { error } = (await supabase
-    .from("api_limit")
-    .update({ reset_date: newResetDate })
-    .select()) as {
-    error: unknown;
-  };
+const updateResetDate = async (currentYear: number, resetDate: string) => {
+  const newResetDate = checkResetDate(currentYear, resetDate);
 
-  if (error) {
-    return `Failed to update the reset date. Error: ${error}`;
+  try {
+    const { error } = (await supabase
+      .from("api_limit")
+      .update({ reset_date: newResetDate.toISOString() })
+      .select()) as {
+      error: unknown;
+    };
+
+    if (error) {
+      console.log(error);
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 
 // Checking if we need to update to next reset date if current date <= reset date.
-const checkResetDate = (date: Date) => {
-  // check if the month has 28 (29), 30, or 31 days.
-  checkAmountOfDays(date);
-};
+const checkResetDate = (currentYear: number, resetDate: string) => {
+  let currentMonth: number = new Date().getMonth();
+  let prevMonth: number = currentMonth === 0 ? 11 : currentMonth - 1;
 
-const checkAmountOfDays = (date: Date) => {
-  let nextMonth = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+  // gets the last day of the previous month
+  let totalDaysInMonth = new Date(currentYear, prevMonth + 1, 0).getDate();
+
+  let futureResetDate = new Date(resetDate);
+  futureResetDate.setDate(futureResetDate.getDate() + totalDaysInMonth);
+
+  return futureResetDate;
 };
 
 app.listen(PORT, () => console.log(`Server is listening on port: ${PORT}`));
