@@ -36,22 +36,14 @@ interface ErrorDataProp {
 }
 
 const HomeForm = () => {
+  const childRef = useRef<HTMLElement>(null);
   const [isSubmitted, setIsSubmitting] = useState<boolean>(false);
   const [data, setData] = useState<ApiResponse | null>(null);
-  const childRef = useRef<HTMLElement>(null);
   const [status, setStatus] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [requestAmount, setRequestAmount] = useState<number>(0);
 
-  // Scrolls screen down to comparables or error screen once the data is received from API.
-  useEffect(() => {
-    if (data || (status >= 400 && childRef.current)) {
-      childRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  }, [data, status]);
+  const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
 
   // Form schema
   const form = useForm<FormFields>({
@@ -64,9 +56,26 @@ const HomeForm = () => {
     },
   });
 
+  // Scrolls screen down to comparables or error screen once the data is received from API.
+  useEffect(() => {
+    if (data || (status >= 400 && childRef.current)) {
+      childRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [data, status]);
+
+
+  useEffect(() => {
+    console.log(isDataLoaded)
+  }, [isDataLoaded])
+
   // Function to the server when button is clicked
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     setIsSubmitting(true);
+
+    // fetch to server
     try {
       const response = await fetch("http://localhost:5000/homeData", {
         method: "POST",
@@ -85,14 +94,23 @@ const HomeForm = () => {
         setRequestAmount(requestAmount);
         return;
       }
+
+      // if request is successful
       const result: ApiResponse = await response.json();
       setData(result);
+
+      // skeleton
+      setIsDataLoaded(!isDataLoaded);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     } finally {
       setIsSubmitting(false);
+      
     }
   };
+
+  
+
 
   return (
     <>
@@ -101,6 +119,7 @@ const HomeForm = () => {
           className="grid mt-5 gap-2 font-geistSans md:max-w-[600px] mq400w:justify-center mq400w:mx-auto lg:grid-cols-2 lg:px-6 lg:min-w-[900px] "
           onSubmit={form.handleSubmit(onSubmit)}
         >
+          
           {/* Address */}
           <FormField
             control={form.control}
@@ -231,7 +250,9 @@ const HomeForm = () => {
           progressBar={requestAmount}
         />
       ) : (
-        data && <Comparables data={data} ref={childRef} />
+        data && (
+          <Comparables data={data} ref={childRef} />
+        )
       )}
     </>
   );
