@@ -1,19 +1,30 @@
 "use client";
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { ApiResponse } from "./HomeTypes";
-import { Skeleton } from "@nextui-org/skeleton";
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 
 type ComparableProps = {
   data: ApiResponse;
-
+  propertyType: string | null;
+  totalComparable: number | null;
 };
 
 const Comparables = forwardRef<HTMLElement, ComparableProps>(
-  ({ data }, ref) => {
-    let comparable = data.comparables;
+  ({ data, propertyType, totalComparable }, ref) => {
+    const [equalAmountComps, setEqualAmountComps] = useState<boolean>(true);
 
-    let dataSize = comparable.slice(0, comparable.length);
+    // filters result to property type input
+    const filteredResults = data.comparables.filter(
+      (property) => property.propertyType === propertyType
+    );
+
+    // If filtered result length is less than comp count input, notify user
+    useEffect(() => {
+      if (filteredResults.length !== totalComparable) {
+        setEqualAmountComps(false);
+      } else {
+        setEqualAmountComps(true);
+      }
+    }, [filteredResults.length, totalComparable]);
 
     return (
       <section id="comparables" ref={ref}>
@@ -31,15 +42,18 @@ const Comparables = forwardRef<HTMLElement, ComparableProps>(
             </div>
           </div>
 
-          
-
+          {/* results */}
           <div>
             <h1 className="text-2xl font-[700] pb-3 text-center font-nunito md:text-3xl lg:text-4xl">
               Comparable Properties
             </h1>
+            <h2 className={!equalAmountComps ? "block" : "hidden"}>
+              Only found {filteredResults.length} out of {totalComparable}{" "}
+              {propertyType} properties to compare.
+            </h2>
             <div className="">
               <ul className="flex flex-col gap-2 mx-2 pt-2 mq400w:grid mq400w:grid-cols-2 md:grid md:grid-cols-3 md:px-3">
-                {data.comparables.map((comparable) => (
+                {filteredResults.map((comparable) => (
                   <li
                     key={comparable.id}
                     className="grid bg-slate-300 p-2 rounded-sm font-nunito"
@@ -97,4 +111,4 @@ const Comparables = forwardRef<HTMLElement, ComparableProps>(
   }
 );
 
-export default Comparables
+export default Comparables;

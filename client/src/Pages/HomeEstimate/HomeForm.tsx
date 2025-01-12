@@ -42,8 +42,8 @@ const HomeForm = () => {
   const [status, setStatus] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [requestAmount, setRequestAmount] = useState<number>(0);
-
-  const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
+  const [propertyTypeInput, setPropertyTypeIput] = useState<string | null>(null)
+  const [compCountInput , setCompCountInput] = useState<number | null>(null)
 
   // Form schema
   const form = useForm<FormFields>({
@@ -67,13 +67,11 @@ const HomeForm = () => {
   }, [data, status]);
 
 
-  useEffect(() => {
-    console.log(isDataLoaded)
-  }, [isDataLoaded])
-
   // Function to the server when button is clicked
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     setIsSubmitting(true);
+    setPropertyTypeIput(data.PropertyType)
+    setCompCountInput(data.Comparables)
 
     // fetch to server
     try {
@@ -100,7 +98,7 @@ const HomeForm = () => {
       setData(result);
 
       // skeleton
-      setIsDataLoaded(!isDataLoaded);
+
     } catch (error) {
       console.error(error);
     } finally {
@@ -109,8 +107,7 @@ const HomeForm = () => {
     }
   };
 
-  
-
+  // Function to get property type for filtering
 
   return (
     <>
@@ -251,7 +248,7 @@ const HomeForm = () => {
         />
       ) : (
         data && (
-          <Comparables data={data} ref={childRef} />
+          <Comparables data={data} ref={childRef} propertyType={propertyTypeInput} totalComparable={compCountInput}/>
         )
       )}
     </>
