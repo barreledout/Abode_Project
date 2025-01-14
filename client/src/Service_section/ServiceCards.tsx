@@ -57,9 +57,9 @@ const ServiceCards = () => {
           </div>
           <div className="grid gap-2 text-xs py-2 basis-[170px] flex-grow ">
             <div className="grid gap-1 md:gap-0">
-              <h3 className="font-[700] font-nunito sm:text-sm md:text-xl">
+              <h1 className="font-[700] font-nunito sm:text-sm md:text-xl">
                 {item.serviceIntro}
-              </h3>
+              </h1>
               <p className="font-nunito sm:text-sm md:text-lg lg:text-balance lg:h-[90px] ">
                 {item.desc}
               </p>
