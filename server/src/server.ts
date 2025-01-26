@@ -53,11 +53,11 @@ app.post("/homeData", async (req: Request, res: Response) => {
 
       if (new Date(resetDate) <= currentDate) {
         await updateRequestCount(0, rowId);
-        await updateResetDate(currentYear, resetDate);
+        await updateResetDate(currentYear, resetDate, rowId);
       }
 
       // Check if request_count from DB has yet to reach the limit of 50.
-      if (requestCount && requestCount < requestLimit) {
+      if (requestCount < requestLimit) {
         // fetch to RentCast API.
         const rentCastResponse = await fetch(rentCast_url, options);
         const rentCastData = await rentCastResponse.json();
@@ -70,8 +70,13 @@ app.post("/homeData", async (req: Request, res: Response) => {
 
         // Send error if request_count has reached its limit of 50.
       } else {
+        console.log(
+          "check:",
+          requestCount < requestLimit,
+          requestCount,
+          requestLimit
+        );
         console.log("Successfully prevented fetching data.");
-        console.log("request count:", requestCount);
         res.status(500).json({
           message: `API usage amount has reached the monthly limit. Try again after ${new Date(
             resetDate
@@ -131,19 +136,23 @@ const updateRequestCount = async (newRequestCount: number, id: string) => {
   };
 
   if (error) {
-    console.error("Failed to update the request count", error);
     return `Failed to update the request count. Error: ${error}`;
   }
 };
 
 // Updating the reset date in database
-const updateResetDate = async (currentYear: number, resetDate: string) => {
+const updateResetDate = async (
+  currentYear: number,
+  resetDate: string,
+  id: string
+) => {
   const newResetDate = checkResetDate(currentYear, resetDate);
 
   try {
     const { error } = (await supabase
       .from("api_limit")
       .update({ reset_date: newResetDate.toISOString() })
+      .eq("id", id)
       .select()) as {
       error: unknown;
     };
