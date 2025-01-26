@@ -17,9 +17,8 @@ export default {
         all_dark: "0px 0px 4px rgba(0, 0, 0, 0.19)",
       },
       fontFamily: {
-        parkinsans: ["parkinsans", "sans-serif"],
-        nunito: ["Nunito", "sans-serif"],
-        jost: ["Jost", "sans-serif"],
+        
+        nunito: ["Nunito", "sans-serif"], 
         geistSans: ["Geist", "sans-serif"],
       },
       borderRadius: {
