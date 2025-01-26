@@ -43,14 +43,22 @@ const Comparables = forwardRef<HTMLElement, ComparableProps>(
           </div>
 
           {/* results */}
-          <div>
-            <h1 className="text-2xl font-[700] pb-3 text-center font-nunito md:text-3xl lg:text-4xl">
-              Comparable Properties
-            </h1>
-            <h2 className={!equalAmountComps ? "block" : "hidden"}>
-              Only found {filteredResults.length} out of {totalComparable}{" "}
-              {propertyType} properties to compare.
-            </h2>
+          <div className="">
+            <div className="text-center grid gap-1">
+              <h1 className="text-2xl font-[700] pb-3 text-center font-nunito md:text-3xl lg:text-4xl">
+                Comparable Properties
+              </h1>
+              <h2
+                className={`${
+                  !equalAmountComps ? "block" : "hidden"
+                } font-nunito text-lg fpn`}
+              >
+                Only found{" "}
+                <span className="font-[700]">{filteredResults.length}</span> out
+                of <span className="font-[700]">{totalComparable}</span>{" "}
+                {propertyType} properties to compare.
+              </h2>
+            </div>
             <div className="">
               <ul className="flex flex-col gap-2 mx-2 pt-2 mq400w:grid mq400w:grid-cols-2 md:grid md:grid-cols-3 md:px-3">
                 {filteredResults.map((comparable) => (
