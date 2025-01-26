@@ -36,7 +36,7 @@ const Comparables = forwardRef<HTMLElement, ComparableProps>(
             <div>
               <h2 className="pt-2 text-2xl text-blue-600 font-[600] font-geistSans md:text-4xl">
                 {data.price
-                  ? `${data.price.toLocaleString()}`
+                  ? `$${data.price.toLocaleString()}`
                   : "Price Not Available"}
               </h2>
             </div>
@@ -76,7 +76,7 @@ const Comparables = forwardRef<HTMLElement, ComparableProps>(
                       <span className="font-[600] font-geistSans lg:text-lg ">
                         Price:
                       </span>{" "}
-                      {`${comparable.price.toLocaleString()}`}
+                      {`$${comparable.price.toLocaleString()}`}
                     </span>
                     <span className="hidden md:block">
                       <span className="font-[600] font-geistSans lg:text-lg ">
