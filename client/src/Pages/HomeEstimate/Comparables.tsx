@@ -30,11 +30,11 @@ const Comparables = forwardRef<HTMLElement, ComparableProps>(
       <section id="comparables" ref={ref}>
         <div>
           <div className="text-center font-nunito my-16">
-            <h1 className="text-2xl font-[700] md:text-3xl lg:text-4xl ">
+            <h1 className="text-3xl font-[700] md:text-3xl lg:text-4xl ">
               Home Estimate:
             </h1>
             <div>
-              <h2 className="pt-2 text-2xl text-blue-600 font-[600] font-geistSans md:text-4xl">
+              <h2 className="pt-2 text-3xl text-blue-600 font-[600] font-geistSans md:text-4xl">
                 {data.price
                   ? `$${data.price.toLocaleString()}`
                   : "Price Not Available"}
@@ -42,8 +42,8 @@ const Comparables = forwardRef<HTMLElement, ComparableProps>(
             </div>
           </div>
 
-          {/* results */}
-          <div className="">
+          {/* API Results */}
+          <div className="max-w-[950px] mx-auto">
             <div className="text-center grid gap-1">
               <h1 className="text-2xl font-[700] pb-3 text-center font-nunito md:text-3xl lg:text-4xl">
                 Comparable Properties
@@ -51,7 +51,7 @@ const Comparables = forwardRef<HTMLElement, ComparableProps>(
               <h2
                 className={`${
                   !equalAmountComps ? "block" : "hidden"
-                } font-nunito text-lg fpn`}
+                } font-nunito text-lg fpn pb-2`}
               >
                 Only found{" "}
                 <span className="font-[700]">{filteredResults.length}</span> out
@@ -59,12 +59,14 @@ const Comparables = forwardRef<HTMLElement, ComparableProps>(
                 {propertyType} properties to compare.
               </h2>
             </div>
+
+            {/* Comparable Property Results */}
             <div className="">
               <ul className="flex flex-col gap-2 mx-2 pt-2 mq400w:grid mq400w:grid-cols-2 md:grid md:grid-cols-3 md:px-3">
                 {filteredResults.map((comparable) => (
                   <li
                     key={comparable.id}
-                    className="grid bg-slate-300 p-2 rounded-sm font-nunito"
+                    className="grid bg-blue-300/30 shadow p-2 rounded-sm font-nunito"
                   >
                     <span className="">
                       <span className="font-[600] font-geistSans lg:text-lg ">
