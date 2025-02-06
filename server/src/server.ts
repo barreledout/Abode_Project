@@ -2,8 +2,7 @@ import { supabase } from "./supabase";
 import express, { Express, Request, Response } from "express";
 import "dotenv/config";
 import cors from "cors";
-import { error } from "console";
-import { mock } from "node:test";
+
 
 const app = express();
 app.use(cors({ origin: "http://localhost:3000" }));
@@ -86,21 +85,22 @@ app.post("/homeData", async (req: Request, res: Response) => {
       }
     }
   } catch (error) {
-    res.status(500).json("Failed to fetch home data.");
+    console.error("Error in /homeData:", error);
+    res.status(500).json({message: "Failed to fetch home data.", error});
   }
 });
 
 // Endpoint for market data page.
-app.post("/marketData"),
-  async (req: Request, res: Response) => {
-    const { zipCode, dataType, historyRange } = req.body;
-    const RENTCAST_TOKEN = process.env.RENTCAST_TOKEN as string;
+// app.post("/marketData"),
+//   async (req: Request, res: Response) => {
+//     const { zipCode, dataType, historyRange } = req.body;
+//     const RENTCAST_TOKEN = process.env.RENTCAST_TOKEN as string;
 
-    // Checks if the api key is not undefined.
-    if (!RENTCAST_TOKEN) {
-      throw new Error("RentCast API key is missing or undefined");
-    }
-  };
+//     // Checks if the api key is not undefined.
+//     if (!RENTCAST_TOKEN) {
+//       throw new Error("RentCast API key is missing or undefined");
+//     }
+//   };
 
 interface supabaseDataRow {
   request_count: number;
