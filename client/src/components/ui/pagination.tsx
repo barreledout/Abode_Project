@@ -129,7 +129,7 @@ const Pagination = ({
       </div>
 
       {/* Pagination Button Bar  */}
-      <div className="flex justify-center mt-4 gap-2 font-nunito">
+      <div className={`${paginationNumbers.length < 2 ? "hidden" : "block"} flex justify-center mt-4 gap-2 font-nunito`}>
         {paginationNumbers.map((pageNumber) => (
           <button 
             key={pageNumber} 
