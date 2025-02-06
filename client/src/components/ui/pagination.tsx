@@ -13,11 +13,17 @@ const Pagination = ({
   propertyType,
   totalComparable,
 }: PaginationProps) => {
-  const [postPerPage, setPostPerPage] = useState<number>(5);
-  const paginationNumbers: number[] = [];
+
+  // Total amount of results to show per page.
+  const POSTPERPAGE = 6
+  const [postPerPage, setPostPerPage] = useState<number>(POSTPERPAGE);
+
+  // Checks if the return data size is less than the user's
+  // inputted comparable amount
   const [equalAmountComps, setEqualAmountComps] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
-
+  const paginationNumbers: number[] = [];
+  
   // filters result to property type input
   const filteredResults = resultsArr.comparables.filter(
     (property) => property.propertyType === propertyType
@@ -48,6 +54,7 @@ const Pagination = ({
 
   return (
     <>
+      {/* Comparable Property Results */}
       <div className="max-w-[950px] mx-auto">
         <div className="text-center grid gap-1">
           <h1 className="text-2xl font-[700] pb-3 text-center font-nunito md:text-3xl lg:text-4xl">
@@ -65,7 +72,7 @@ const Pagination = ({
           </h2>
         </div>
 
-        {/* Comparable Property Results */}
+        {/* Property Feature Results */}
         <div className="">
           <ul className="flex flex-col gap-2 mx-2 pt-2 mq400w:grid mq400w:grid-cols-2 md:grid md:grid-cols-3 md:px-3">
             {paginatedResults.map((comparable) => (
@@ -121,10 +128,15 @@ const Pagination = ({
         </div>
       </div>
 
-      {/* Show pagination buttons  */}
-      <div className="flex justify-center mt-4 gap-2">
+      {/* Pagination Button Bar  */}
+      <div className="flex justify-center mt-4 gap-2 font-nunito">
         {paginationNumbers.map((pageNumber) => (
-          <button key={pageNumber} onClick={() => setCurrentPage(pageNumber)}>
+          <button 
+            key={pageNumber} 
+            onClick={() => setCurrentPage(pageNumber)}
+            className={`${pageNumber === currentPage ? "bg-blue-300/30 font-[700] rounded-sm shadow" : "bg-none"} px-2 py-0.5`}
+          
+          >
             {pageNumber}
           </button>
         ))}
