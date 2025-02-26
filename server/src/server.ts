@@ -3,7 +3,6 @@ import express, { Express, Request, Response } from "express";
 import "dotenv/config";
 import cors from "cors";
 
-
 const app = express();
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
@@ -86,7 +85,7 @@ app.post("/homeData", async (req: Request, res: Response) => {
     }
   } catch (error) {
     console.error("Error in /homeData:", error);
-    res.status(500).json({message: "Failed to fetch home data.", error});
+    res.status(500).json({ message: "Failed to fetch home data.", error });
   }
 });
 
@@ -151,7 +150,7 @@ const updateResetDate = async (
   try {
     const { error } = (await supabase
       .from("api_limit")
-      .update({ reset_date: newResetDate.toISOString() })
+      .update({ reset_date: newResetDate.toLocaleDateString() })
       .eq("id", id)
       .select()) as {
       error: unknown;
