@@ -168,7 +168,7 @@ const updateResetDate = async (
 // Checking if we need to update to next reset date if current date <= reset date.
 const checkResetDate = (currentYear: number, resetDate: string) => {
   let currentMonth: number = new Date().getMonth();
-  let prevMonth: number = currentMonth === 0 ? 11 : currentMonth - 1;
+  let prevMonth: number = currentMonth === 0 ? 11 : currentMonth;
 
   // gets the last day of the previous month
   let totalDaysInMonth = new Date(currentYear, prevMonth + 1, 0).getDate();
