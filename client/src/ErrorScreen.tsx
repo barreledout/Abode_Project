@@ -1,6 +1,5 @@
 import { forwardRef, useState } from "react";
-import { IoReload } from "react-icons/io5";
-import { RxQuestionMarkCircled } from "react-icons/rx";
+
 import { Progress } from "./components/ui/progress";
 import {
   Popover,
@@ -40,7 +39,7 @@ const ErrorScreen = forwardRef<HTMLElement, ErrorProps>(
               />
               <Popover>
                 <PopoverTrigger>
-                  <RxQuestionMarkCircled />
+                  
                 </PopoverTrigger>
                 <PopoverContent about="What the progress bar is about" className="relative -left-4 top-0 ">
                   50 API request per month. Current: <b>{progressBar / 2}/50</b> request.
@@ -53,7 +52,7 @@ const ErrorScreen = forwardRef<HTMLElement, ErrorProps>(
               className={`font-geistSans bg-blue-300/30 hover:bg-blue-300/30 py-1 my-6 px-4 rounded-md max-w-[170px] mx-auto shadow-md font-[500] text-black lg:text-lg`}
               onClick={handleRefresh}
             >
-              <IoReload className={``} />
+              
             </button>
           </div>
         </div>
