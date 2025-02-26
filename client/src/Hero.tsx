@@ -1,13 +1,9 @@
-import { useInView } from "react-intersection-observer";
+
 
 const HeroImg = () => {
-  const { ref, inView } = useInView({
-    threshold: 0,
-    triggerOnce: true,
-  });
-
+  
   return (
-    <div className="w-full h-full relative shadow-lg" ref={ref}>
+    <div className="w-full h-full relative shadow-lg" >
       <img
         src="/heroHome1.jpg"
         alt="Home page daytime home."
