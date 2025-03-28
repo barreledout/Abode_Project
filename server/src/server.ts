@@ -2,6 +2,7 @@ import { supabase } from "./supabase";
 import express, { Express, Request, Response } from "express";
 import "dotenv/config";
 import cors from "cors";
+import { reset } from "nodemon";
 
 const app = express();
 app.use(cors({ origin: "http://localhost:3000" }));
@@ -50,7 +51,6 @@ app.post("/homeData", async (req: Request, res: Response) => {
       const currentYear: number = new Date().getFullYear();
 
       if (new Date(resetDate) <= currentDate) {
-        await updateRequestCount(0, rowId);
         await updateResetDate(currentYear, resetDate, rowId);
       }
 
@@ -135,7 +135,7 @@ const updateRequestCount = async (newRequestCount: number, id: string) => {
   };
 
   if (error) {
-    return `Failed to update the request count. Error: ${error}`;
+    throw new Error(`Failed to update request count: ${error}`);
   }
 };
 
@@ -145,22 +145,27 @@ const updateResetDate = async (
   resetDate: string,
   id: string
 ) => {
+  // Checks if the curent period needs to be updated to next period
   const newResetDate = checkResetDate(currentYear, resetDate);
 
-  try {
-    const { error } = (await supabase
-      .from("api_limit")
-      .update({ reset_date: newResetDate.toLocaleDateString() })
-      .eq("id", id)
-      .select()) as {
-      error: unknown;
-    };
+  // If the request count is less than 50, but a new period has begun, reset back to 0!
+  if (newResetDate.toDateString() !== new Date(resetDate).toDateString()) {
+    await updateRequestCount(0, id);
+    try {
+      const { error } = (await supabase
+        .from("api_limit")
+        .update({ reset_date: newResetDate.toLocaleDateString() })
+        .eq("id", id)
+        .select()) as {
+        error: unknown;
+      };
 
-    if (error) {
+      if (error) {
+        console.log(error);
+      }
+    } catch (error) {
       console.log(error);
     }
-  } catch (error) {
-    console.log(error);
   }
 };
 
